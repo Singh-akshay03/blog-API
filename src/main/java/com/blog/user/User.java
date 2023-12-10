@@ -10,10 +10,10 @@ import lombok.Setter;
 @Setter
 @Entity(name = "users")
 public class User extends BaseEntity {
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false,unique = true,length = 30)
     private String userName;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false,unique = true,length = 50)
     private String email;
 
     @Column(nullable = false)
