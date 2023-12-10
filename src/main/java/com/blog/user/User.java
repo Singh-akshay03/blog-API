@@ -1,18 +1,24 @@
 package com.blog.user;
 
+import com.blog.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
 
 @Getter
 @Setter
 @Entity(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(updatable = false, nullable = false)
-    private UUID id;
+public class User extends BaseEntity {
+    @Column(nullable = false,unique = true)
+    private String userName;
 
+    @Column(nullable = false,unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(length = 100)
+    private String bio;
 }
