@@ -2,6 +2,7 @@ package com.blog.user;
 
 import com.blog.common.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
