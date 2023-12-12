@@ -1,10 +1,14 @@
 package com.blog.user;
 
+import com.blog.article.Article;
 import com.blog.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.w3c.dom.stylesheets.LinkStyle;
+
+import java.util.List;
 
 
 @Getter
@@ -22,4 +26,17 @@ public class User extends BaseEntity {
 
     @Column(length = 100)
     private String bio;
+
+    @OneToMany(mappedBy = "author")
+    private List<Article> article;
+
+
+    @ManyToMany(targetEntity = User.class,mappedBy = "following")
+    List<User> followers;
+
+    @ManyToMany()
+    List<User> following;
+
+    @ManyToMany(targetEntity = Article.class,mappedBy = "likedBy")
+    List<Article> favoriteArticles;
 }

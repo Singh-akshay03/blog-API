@@ -1,10 +1,13 @@
 package com.blog.article;
 
+import com.blog.comment.Comment;
 import com.blog.common.BaseEntity;
 import com.blog.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 
 @Getter
@@ -22,4 +25,10 @@ public class Article extends BaseEntity {
 
     @ManyToOne
     private User author;
+
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments;
+
+    @ManyToMany()
+    List<User> likedBy;
 }

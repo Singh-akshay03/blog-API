@@ -19,8 +19,11 @@ public class Comment extends BaseEntity {
     private String body;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private User author;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Article article;
+
 }

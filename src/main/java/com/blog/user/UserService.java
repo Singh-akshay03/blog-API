@@ -1,5 +1,7 @@
 package com.blog.user;
 
+import com.blog.Exceptions.NoUserExistWithTheEmail;
+import com.blog.Exceptions.NoUserExistWithTheUserName;
 import com.blog.Exceptions.UserAlreadyExistsWithThisEmail;
 import com.blog.Exceptions.UserAlreadyExistsWithThisUserName;
 import com.blog.dtos.CreateUserRequestDTO;
@@ -38,5 +40,21 @@ public class UserService {
         user.setBio(createUserRequestDTO.getBio());
         user.setCreatedAt(new Date());
         return userRepository.save(user);
+    }
+
+    public User getUserByUserName(String username) throws NoUserExistWithTheUserName {
+        User user= userRepository.findByUserName(username);
+        if(user == null){
+            throw new NoUserExistWithTheUserName("User not found with the username: " + username);
+        }
+        return user;
+    }
+
+    public User getUserByEmail(String email) throws NoUserExistWithTheEmail {
+        User user= userRepository.findByEmail(email);
+        if(user == null){
+            throw new NoUserExistWithTheEmail("User not found with the email: " + email);
+        }
+        return user;
     }
 }
