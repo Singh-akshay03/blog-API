@@ -1,9 +1,11 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:file:./blog.db
+    url: jdbc:mysql://localhost:3306/blog_api
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
-    generate-ddl: on
     hibernate:
       ddl-auto: update
     show-sql: true
