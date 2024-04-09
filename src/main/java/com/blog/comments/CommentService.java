@@ -1,4 +1,4 @@
 package com.blog.comments;
 
-class Controller {
+public class CommentService {
 }

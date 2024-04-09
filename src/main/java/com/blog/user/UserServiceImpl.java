@@ -2,6 +2,7 @@ package com.blog.user;
 
 import com.blog.DTOs.CreateUserDTO;
 import com.blog.DTOs.UpdateUserDTO;
+import com.blog.Exceptions.UserDoNotExitsWithId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,13 +29,17 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User updateUser(UpdateUserDTO user) {
-        return null;
-    }
-
-    @Override
-    public User getUserByUserName(String username) {
-        return userRepository.findUserByName(username);
+    public User updateUser(UpdateUserDTO user) throws UserDoNotExitsWithId {
+        User existingUser = userRepository.findById(user.getId()).orElse(null);
+        if (existingUser == null) {
+            throw new UserDoNotExitsWithId("User does not exist with id: " + user.getId());
+        }else {
+            existingUser.setName(user.getName());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setPassword(user.getPassword());
+            existingUser.setType(user.getType());
+            return userRepository.save(existingUser);
+        }
     }
 
     @Override
@@ -50,5 +55,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void deleteUser(UUID userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 }
