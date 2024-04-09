@@ -1,4 +1,4 @@
 package com.blog.comments;
 
-public class Service {
+public class Repository {
 }

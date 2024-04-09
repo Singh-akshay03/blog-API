@@ -1,6 +1,8 @@
 package com.blog.comments;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,10 +18,9 @@ import java.util.Date;
 @Entity
 public class Comment {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String content;
-    private String authorId;
-    private String postId;
     private Date createdAt;
     private Date updatedAt;
 

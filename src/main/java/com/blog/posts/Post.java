@@ -1,9 +1,7 @@
 package com.blog.posts;
 
 import com.blog.user.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,14 +16,12 @@ import java.util.UUID;
 @Entity
 public class Post {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String title;
     private String content;
-    private String authorId;
     private String createdAt;
     private String updatedAt;
-    private String categoryId;
     private String image;
-    @ManyToOne
-    private User author;
+
 }

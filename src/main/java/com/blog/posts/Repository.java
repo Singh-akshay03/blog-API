@@ -1,4 +1,4 @@
 package com.blog.posts;
 
-public class Controller {
+public class Repository {
 }

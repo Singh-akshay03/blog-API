@@ -1,4 +1,4 @@
 package com.blog.category;
 
-public class Controller {
+public interface Repository {
 }

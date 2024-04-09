@@ -1,4 +1,4 @@
 package com.blog.category;
 
-public class CategoryService {
+public class Service {
 }

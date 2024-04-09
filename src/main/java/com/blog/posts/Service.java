@@ -1,4 +1,11 @@
 package com.blog.posts;
 
-public class PostService {
+import com.blog.DTOs.CreateUserDTO;
+import com.blog.user.User;
+
+import java.util.List;
+import java.util.UUID;
+
+public class Service {
+
 }
