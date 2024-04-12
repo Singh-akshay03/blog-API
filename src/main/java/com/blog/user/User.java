@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -22,5 +23,7 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private String bio;
     private UserType type;
+    private Date createdAt;
 }

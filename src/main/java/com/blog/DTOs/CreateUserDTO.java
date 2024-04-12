@@ -12,4 +12,5 @@ public class CreateUserDTO {
     private String email;
     private String password;
     private UserType type;
+    private String bio;
 }

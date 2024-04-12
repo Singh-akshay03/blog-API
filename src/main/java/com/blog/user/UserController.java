@@ -2,6 +2,7 @@ package com.blog.user;
 
 import com.blog.DTOs.CreateUserDTO;
 import com.blog.DTOs.UpdateUserDTO;
+import com.blog.DTOs.UserResponseDTO;
 import com.blog.Exceptions.UserDoNotExitsWithId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,27 +18,27 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable UUID userId) throws UserDoNotExitsWithId {
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable UUID userId) throws UserDoNotExitsWithId {
         return ResponseEntity.ok(userService.getUserByUserId(userId));
     }
 
     @GetMapping("/user/email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email){
+    public ResponseEntity<UserResponseDTO> getUserByEmail(@PathVariable String email){
         return ResponseEntity.ok(userService.findUserByEmail(email));
     }
 
     @PostMapping("/user")
-    public ResponseEntity<User> createUser(CreateUserDTO user){
+    public ResponseEntity<UserResponseDTO> createUser(CreateUserDTO user){
         return ResponseEntity.ok(userService.createUser(user));
     }
 
     @PatchMapping("/user")
-    public ResponseEntity<User> updateUser(@RequestBody UpdateUserDTO user) throws UserDoNotExitsWithId {
+    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UpdateUserDTO user) throws UserDoNotExitsWithId {
         return ResponseEntity.ok(userService.updateUser(user));
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers(){
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
