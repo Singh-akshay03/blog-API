@@ -1,11 +1,10 @@
 package com.blog.user;
 
 import com.blog.DTOs.CreateUserDTO;
-import com.blog.DTOs.UpdateUserDTO;
 import com.blog.DTOs.UserResponseDTO;
 import com.blog.Exceptions.UserNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -13,11 +12,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
-
-
-    UserRepository userRepository;
-    public UserServiceImpl(UserRepository userRepository) {
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
+    UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -26,63 +25,52 @@ public class UserServiceImpl implements IUserService {
                 .name(user.getName())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .type(user.getType())
+                .bio(user.getBio())
                 .createdAt(new Date())
-                .bio(user.getBio())
                 .build();
-        User userResponse= userRepository.save(newUser);
-        return convertToUserResponseDTO(userResponse);
+        User savedUser = userRepository.save(newUser);
+        return this.modelMapper.map(savedUser, UserResponseDTO.class);
+    }
+
+
+    @Override
+    public UserResponseDTO updateUser(CreateUserDTO user, Long userId) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
+        existingUser.setName(user.getName());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setUpdatedAt(new Date());
+        if (user.getPassword() != null) {
+            existingUser.setPassword(user.getPassword());
+        }
+        if (user.getBio() != null) {
+            existingUser.setBio(user.getBio());
+        }
+        return this.modelMapper.map(userRepository.save(existingUser), UserResponseDTO.class);
     }
 
     @Override
-    public UserResponseDTO updateUser(UpdateUserDTO user) {
-        User userToUpdate = userRepository.findById(user.getId()).orElseThrow(() -> new UserNotFoundException(user.getId()));
-        User updatedUser = User.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .email(user.getEmail())
-                .password(userToUpdate.getPassword())
-                .type(user.getType())
-                .bio(user.getBio())
-                .createdAt(userToUpdate.getCreatedAt())
-                .build();
-        return convertToUserResponseDTO(userRepository.save(updatedUser));
-    }
-
-    @Override
-    public UserResponseDTO getUserByUserId(UUID userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        return convertToUserResponseDTO(user);
+    public UserResponseDTO getUserByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
+        return this.modelMapper.map(user, UserResponseDTO.class);
     }
 
     @Override
     public List<UserResponseDTO> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream().map(this::convertToUserResponseDTO).collect(Collectors.toList());
+        return userRepository.findAll().stream()
+                .map(user-> modelMapper.map(user, UserResponseDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void deleteUser(UUID userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
         userRepository.delete(user);
     }
-
-    @Override
-    public UserResponseDTO findUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        if(user == null){
-            throw new UserNotFoundException(email);
-        }
-        return this.convertToUserResponseDTO(user);
-    }
-
-    public UserResponseDTO convertToUserResponseDTO(User user){
-        return UserResponseDTO.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .email(user.getEmail())
-                .type(user.getType())
-                .bio(user.getBio())
-                .build();
-    }
 }
+
+
+
+

@@ -3,7 +3,7 @@ package com.blog.Exceptions;
 import java.util.UUID;
 
 public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException(UUID id) {
+    public UserNotFoundException(Long id) {
         super("User with id: " + id + " not found");
     }
     public UserNotFoundException(String email) {

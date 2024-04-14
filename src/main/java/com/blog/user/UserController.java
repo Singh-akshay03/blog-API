@@ -1,51 +1,45 @@
 package com.blog.user;
 
 import com.blog.DTOs.CreateUserDTO;
-import com.blog.DTOs.UpdateUserDTO;
 import com.blog.DTOs.UserResponseDTO;
-import com.blog.Exceptions.UserDoNotExitsWithId;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.UUID;
 
 @RestController
+@RequestMapping("/api/users")
 public class UserController {
-    UserServiceImpl userService;
-    UserController(UserServiceImpl userService){
+    private final IUserService userService;
+
+    public UserController(IUserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable UUID userId) throws UserDoNotExitsWithId {
-        return ResponseEntity.ok(userService.getUserByUserId(userId));
+    @PostMapping("/")
+    public ResponseEntity<UserResponseDTO> createUser(@Validated @RequestBody CreateUserDTO user) {
+        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
-    @GetMapping("/user/email/{email}")
-    public ResponseEntity<UserResponseDTO> getUserByEmail(@PathVariable String email){
-        return ResponseEntity.ok(userService.findUserByEmail(email));
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserResponseDTO> updateUser(@Validated @RequestBody CreateUserDTO user, @PathVariable Long userId) {
+        return new ResponseEntity<>(userService.updateUser(user, userId), HttpStatus.OK);
     }
 
-    @PostMapping("/user")
-    public ResponseEntity<UserResponseDTO> createUser(CreateUserDTO user){
-        return ResponseEntity.ok(userService.createUser(user));
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponseDTO> getUserByUserId(@PathVariable Long userId) {
+        return new ResponseEntity<>(userService.getUserByUserId(userId), HttpStatus.OK);
     }
 
-    @PatchMapping("/user")
-    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UpdateUserDTO user) throws UserDoNotExitsWithId {
-        return ResponseEntity.ok(userService.updateUser(user));
+    @GetMapping("/")
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers(){
-        return ResponseEntity.ok(userService.getAllUsers());
-    }
-
-    @DeleteMapping("/user/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID userId){
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

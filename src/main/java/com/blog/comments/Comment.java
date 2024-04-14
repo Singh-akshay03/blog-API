@@ -18,8 +18,8 @@ import java.util.Date;
 @Entity
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String content;
     private Date createdAt;
     private Date updatedAt;

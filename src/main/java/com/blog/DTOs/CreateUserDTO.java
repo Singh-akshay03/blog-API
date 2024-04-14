@@ -1,16 +1,13 @@
 package com.blog.DTOs;
-
-import com.blog.user.UserType;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
-import java.util.UUID;
 
 @Data
 public class CreateUserDTO {
-    private UUID id;
+    @NotBlank(message = "Name is required to create a user")
     private String name;
+    @NotBlank(message = "Email is required to create a user")
     private String email;
     private String password;
-    private UserType type;
     private String bio;
 }

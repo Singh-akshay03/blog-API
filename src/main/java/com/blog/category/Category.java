@@ -18,8 +18,7 @@ import java.util.UUID;
 @Entity
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private CategoryType type;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String description;
 }
