@@ -1,5 +1,4 @@
 package com.blog.user;
-
 import com.blog.DTOs.CreateUserDTO;
 import com.blog.DTOs.UserResponseDTO;
 import com.blog.Exceptions.UserNotFoundException;
@@ -7,7 +6,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
